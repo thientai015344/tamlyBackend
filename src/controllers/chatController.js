@@ -1,4 +1,4 @@
-const USERSevice = require('../services/USERSevice');
+const ChatSevice = require('../services/ChatSevice');
 
 
 
@@ -28,7 +28,7 @@ let handleLogin = async (req, res) => {
 
 
 
-let handleGetAllUSER = async (req, res) => {
+let handleGetAllChat = async (req, res) => {
     let id = req.query.id;
     if (!id) {
         return res.status(200).json({
@@ -37,7 +37,7 @@ let handleGetAllUSER = async (req, res) => {
             user: []
         })
     }
-    let user = await USERSevice.getAllUsers(id);
+    let user = await ChatSevice.getAllChats(id);
     return res.status(200).json({
         errCode: 0,
         errMessage: 'ok',
@@ -48,13 +48,13 @@ let handleGetAllUSER = async (req, res) => {
 
 
 let handleCreateNewUserAdmin = async (req, res) => {
-    let message = await USERSevice.CreateNewUserAdmin(req.body);
+    let message = await USERSevice.CreateNewUser(req.body);
     return res.status(200).json(message);
 }
 
 let handleCreateNewUser = async (req, res) => {
     console.log(req.body)
-    let message = await USERSevice.CreateNewUser(req.body);
+    let message = await USERSevice.CreateNewUserAdmin(req.body);
     return res.status(200).json(message);
 
 }
@@ -97,10 +97,10 @@ let handleEditUser = async (req, res) => {
 
 module.exports = {
 
-    handleLogin: handleLogin,
-    handleGetAllUSER: handleGetAllUSER,
-    handleCreateNewUserAdmin: handleCreateNewUserAdmin,
-    handleCreateNewUser: handleCreateNewUser,
-    handleDeleteUser: handleDeleteUser,
-    handleEditUser: handleEditUser,
+    // handleLogin: handleLogin,
+    handleGetAllChat: handleGetAllChat,
+    // handleCreateNewUserAdmin: handleCreateNewUserAdmin,
+    // handleCreateNewUser: handleCreateNewUser,
+    // handleDeleteUser: handleDeleteUser,
+    // handleEditUser: handleEditUser,
 }

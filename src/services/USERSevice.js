@@ -1,6 +1,5 @@
 const bcrypt = require('bcryptjs');
-const db = require('../models')
-
+import db from '../models'
 const salt = bcrypt.genSaltSync(10);
 
 let hashUserPasswords = (password) => {
@@ -15,10 +14,7 @@ let hashUserPasswords = (password) => {
 
         }
     })
-
 }
-
-
 
 let handleUserLogin = (username, password) => {
     console.log('data login', username, password)
@@ -30,7 +26,7 @@ let handleUserLogin = (username, password) => {
             if (isExist) {
                 let user = await db.user.findOne({
                     where: { username: username },
-                    attributes: ['id', 'username', 'phonenumber', 'interfaceName', 'password'],
+                    attributes: ['id', 'username', 'phonenumber', 'email', 'role', 'password'],
                     raw: true
 
                 });
@@ -125,6 +121,44 @@ let getAllUsers = (userId) => {
 
 }
 
+let CreateNewUserAdmin = (data) => {
+    console.log('data', data)
+    return new Promise(async (resolve, reject) => {
+        try {
+            let check = await checkUsername(data.username);
+            if (check == true) {
+
+                resolve({
+                    errCode: 1,
+                    errMessage: 'this username is already in used, plz try anothe username'
+                })
+
+            } else {
+                let hashPasswordFromBcrypt = await hashUserPasswords(data.password);
+
+                await db.user.create({
+
+                    username: data.username,
+                    password: hashPasswordFromBcrypt,
+                    email: data.name,
+                    role:'admin',
+                    phonenumber: data.phonenumber,
+
+                })
+
+                resolve({
+                    errCode: 0,
+                    message: 'ok'
+
+                })
+            }
+        } catch (error) {
+            reject(error);
+
+        }
+    })
+}
+
 let CreateNewUser = (data) => {
     console.log('data', data)
     return new Promise(async (resolve, reject) => {
@@ -144,7 +178,8 @@ let CreateNewUser = (data) => {
 
                     username: data.username,
                     password: hashPasswordFromBcrypt,
-                    interfaceName: data.name,
+                    email: data.email,
+                    role:'user',
                     phonenumber: data.phonenumber,
 
                 })
@@ -191,9 +226,6 @@ let deleteUser = (id) => {
 }
 
 let updateUserData = (data) => {
-
-
-    
 
     return new Promise(async (resolve, reject) => {
         try {
@@ -255,6 +287,7 @@ let updateUserData = (data) => {
 module.exports = {
     handleUserLogin: handleUserLogin,
     getAllUsers: getAllUsers,
+    CreateNewUserAdmin:CreateNewUserAdmin,
     CreateNewUser: CreateNewUser,
     deleteUser: deleteUser,
     updateUserData: updateUserData,
