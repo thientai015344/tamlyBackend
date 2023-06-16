@@ -1,5 +1,6 @@
 
 import db from '../models'
+import upload from '../uploads/upload'
 
 let getAllPost = (id) => {
 
@@ -35,12 +36,14 @@ let CreateNewPost = (data) => {
                 })
 
             } else {
-                await db.post.create({
+                
+              //  let pathimg = await upload.uploadImg(data.img)
 
-                    title: data.username,
-                    discription: hashPasswordFromBcrypt,
-                    content: data.name,
-                    userId: data.userId
+                await db.post.create({
+                    title: data.title,
+                    discription: discription,
+                    content: data.content,
+                    userId: pathimg
 
                 })
 

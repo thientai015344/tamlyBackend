@@ -20,8 +20,7 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.use(bodyParser.json({ limit: "50mb" }));
-app.use(bodyParser.urlencoded({ limit: "50mb", extended: true, parameterLimit: 50000 }));
+
 
 viewEngine(app);
 initRoutess(app);
@@ -31,7 +30,6 @@ io.on("connection", (socket) => {
   console.log("New client connected: " + socket.id);
 
   socket.on("sendDataClient", async function (data) {
-    console.log(data)
     let message = await ChatSevice.CreateNewChat(data);
     console.log(message.message)
     if(message.message == 'ok'){
