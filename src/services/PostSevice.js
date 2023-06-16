@@ -1,5 +1,6 @@
 
 import db from '../models'
+import Upload from '../uploads/upload'
 
 let getAllPost = (id) => {
 
@@ -23,7 +24,7 @@ let getAllPost = (id) => {
 }
 
 let CreateNewPost = (data) => {
-    console.log('data new post sevice', data)
+   // console.log('data new post sevice', data)
     return new Promise(async (resolve, reject) => {
         try {
          
@@ -35,14 +36,22 @@ let CreateNewPost = (data) => {
                 })
 
             } else {
-                await db.post.create({
+                if(data.userId){
 
-                    title: data.username,
-                    discription: hashPasswordFromBcrypt,
-                    content: data.name,
-                    userId: data.userId
+                    const folderPath = 'src/uploads/imagepost/'; // Update with the actual folder path
+    
+                    // Save the image and get the image path
+                    const imagePath = await Upload.saveImage(data.userId, folderPath);
+                    console.log(imagePath)
+                }
+                // await db.post.create({
 
-                })
+                //     title: data.username,
+                //     discription: data.discription,
+                //     content: data.content,
+                //     userId: data.userId
+
+                // })
 
                 resolve({
                     errCode: 0,

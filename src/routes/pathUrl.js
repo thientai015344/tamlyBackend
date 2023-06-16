@@ -1,5 +1,5 @@
 const express = require('express')
-
+const path = require('path');
 const userController = require('../controllers/userController');
 const chatController = require('../controllers/chatController');
 const postController = require('../controllers/postController');
@@ -34,7 +34,12 @@ let initRoutes = (app) => {
     // router.put('/api/edit-userAdm', userController.handleEditUser);
     // router.delete('/api/delete-userAdm', userController.handleDeleteUser);
 
-
+    app.get('/api/get-image', (req, res) => {
+        const imagePath = path.join(__dirname, 'src/uploads/imagepost/506bce3e-cf4e-45fd-b584-bccba75d81dc.png');
+        console.log(imagePath)
+        console.log(req)
+        res.sendFile(imagePath);
+      });
 
     app.use("/", router)
 }

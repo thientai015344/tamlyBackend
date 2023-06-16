@@ -19,7 +19,7 @@ let handleGetAllPost = async (req, res) => {
 }
 
 let handleCreateNewPost = async (req, res) => {
-    console.log(req.body)
+  //  console.log(req.body)
     let message = await PostSevice.CreateNewPost(req.body);
     return res.status(200).json(message);
 
